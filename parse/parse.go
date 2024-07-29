@@ -1,4 +1,5 @@
-// Copyright 2011 The Go Authors. All rights reserved.
+// Copyright 2011 The Go Authors,
+//           2024 Gabriel Veiga <veigo@veigo.dev>.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -631,7 +632,19 @@ func (t *Tree) blockControl() Node {
 	const context = "block clause"
 
 	token := t.nextNonSpace()
-	name := t.parseTemplateName(token, context)
+	var name string
+
+	switch token.typ {
+	case itemString, itemRawString:
+		s, err := strconv.Unquote(token.val)
+		if err != nil {
+			t.error(err)
+		}
+		name = s
+	default:
+		t.unexpected(token, context)
+	}
+
 	pipe := t.pipeline(context, itemRightDelim)
 
 	block := New(name) // name will be updated once we know it.
@@ -647,7 +660,12 @@ func (t *Tree) blockControl() Node {
 	block.add()
 	block.stopParse()
 
-	return t.newTemplate(token.pos, token.line, name, pipe)
+	return t.newTemplate(
+		token.pos,
+		token.line,
+		t.newString(token.pos, token.val, name),
+		pipe,
+	)
 }
 
 // Template:
@@ -658,29 +676,17 @@ func (t *Tree) blockControl() Node {
 // to a string.
 func (t *Tree) templateControl() Node {
 	const context = "template clause"
-	token := t.nextNonSpace()
-	name := t.parseTemplateName(token, context)
+
+	line := t.peekNonSpace().line
+	name := t.term()
+
 	var pipe *PipeNode
 	if t.nextNonSpace().typ != itemRightDelim {
 		t.backup()
 		// Do not pop variables; they persist until "end".
 		pipe = t.pipeline(context, itemRightDelim)
 	}
-	return t.newTemplate(token.pos, token.line, name, pipe)
-}
-
-func (t *Tree) parseTemplateName(token item, context string) (name string) {
-	switch token.typ {
-	case itemString, itemRawString:
-		s, err := strconv.Unquote(token.val)
-		if err != nil {
-			t.error(err)
-		}
-		name = s
-	default:
-		t.unexpected(token, context)
-	}
-	return
+	return t.newTemplate(name.Position(), line, name, pipe)
 }
 
 // command:

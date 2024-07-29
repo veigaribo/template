@@ -7,6 +7,7 @@ package template
 import (
 	"reflect"
 	"sync"
+
 	"github.com/veigaribo/template/parse"
 )
 

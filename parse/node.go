@@ -1,4 +1,5 @@
-// Copyright 2011 The Go Authors. All rights reserved.
+// Copyright 2011 The Go Authors,
+//           2024 Gabriel Veiga <veigo@veigo.dev>.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -978,11 +979,11 @@ type TemplateNode struct {
 	Pos
 	tr   *Tree
 	Line int       // The line number in the input. Deprecated: Kept for compatibility.
-	Name string    // The name of the template (unquoted).
+	Name Node      // The name of the template.
 	Pipe *PipeNode // The command to evaluate as dot for the template.
 }
 
-func (t *Tree) newTemplate(pos Pos, line int, name string, pipe *PipeNode) *TemplateNode {
+func (t *Tree) newTemplate(pos Pos, line int, name Node, pipe *PipeNode) *TemplateNode {
 	return &TemplateNode{tr: t, NodeType: NodeTemplate, Pos: pos, Line: line, Name: name, Pipe: pipe}
 }
 
@@ -994,7 +995,7 @@ func (t *TemplateNode) String() string {
 
 func (t *TemplateNode) writeTo(sb *strings.Builder) {
 	sb.WriteString("{{template ")
-	sb.WriteString(strconv.Quote(t.Name))
+	t.Name.writeTo(sb)
 	if t.Pipe != nil {
 		sb.WriteByte(' ')
 		t.Pipe.writeTo(sb)
@@ -1007,5 +1008,5 @@ func (t *TemplateNode) tree() *Tree {
 }
 
 func (t *TemplateNode) Copy() Node {
-	return t.tr.newTemplate(t.Pos, t.Line, t.Name, t.Pipe.CopyPipe())
+	return t.tr.newTemplate(t.Pos, t.Line, t.Name.Copy(), t.Pipe.CopyPipe())
 }

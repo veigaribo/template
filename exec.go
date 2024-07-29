@@ -1,4 +1,5 @@
-// Copyright 2011 The Go Authors. All rights reserved.
+// Copyright 2011 The Go Authors,
+//           2024 Gabriel Veiga <veigo@veigo.dev>.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,11 +9,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/veigaribo/template/internal/fmtsort"
+	"github.com/veigaribo/template/parse"
 	"io"
 	"reflect"
 	"runtime"
 	"strings"
-	"github.com/veigaribo/template/parse"
 )
 
 // maxExecDepth specifies the maximum stack depth of templates within
@@ -444,7 +445,12 @@ func (s *state) walkRange(dot reflect.Value, r *parse.RangeNode) {
 
 func (s *state) walkTemplate(dot reflect.Value, t *parse.TemplateNode) {
 	s.at(t)
-	tmpl := s.tmpl.Lookup(t.Name)
+	name := s.evalArg(dot, reflect.TypeOf(""), t.Name)
+	// if name.Kind() != reflect.String {
+	// 	s.errorf("template with non-string name %v", name)
+	// }
+
+	tmpl := s.tmpl.Lookup(name.String())
 	if tmpl == nil {
 		s.errorf("template %q not defined", t.Name)
 	}

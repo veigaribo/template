@@ -52,3 +52,15 @@ line 2
   line 1
   line 2  line 3
 ```
+
+## Made {{template}} allow terms as template names
+
+```
+{{- define "one" -}} I {{.}} {{- end -}}
+{{- $tmpl := "one" -}}
+
+{{template $tmpl "u"}}
+
+=>
+I u
+```
