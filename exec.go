@@ -7,12 +7,12 @@ package template
 import (
 	"errors"
 	"fmt"
-	"internal/fmtsort"
+	"github.com/veigaribo/template/internal/fmtsort"
 	"io"
 	"reflect"
 	"runtime"
 	"strings"
-	"text/template/parse"
+	"github.com/veigaribo/template/parse"
 )
 
 // maxExecDepth specifies the maximum stack depth of templates within

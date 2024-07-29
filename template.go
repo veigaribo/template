@@ -7,7 +7,7 @@ package template
 import (
 	"reflect"
 	"sync"
-	"text/template/parse"
+	"github.com/veigaribo/template/parse"
 )
 
 // common holds the information shared by related templates.

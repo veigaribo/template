@@ -1842,7 +1842,7 @@ func TestIssue43065(t *testing.T) {
 	}
 }
 
-// Issue 39807: data race in html/template & text/template
+// Issue 39807: data race in html/template & github.com/veigaribo/template
 func TestIssue39807(t *testing.T) {
 	var wg sync.WaitGroup
 

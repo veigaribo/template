@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // Package fmtsort provides a general stable ordering mechanism
-// for maps, on behalf of the fmt and text/template packages.
+// for maps, on behalf of the fmt and github.com/veigaribo/template packages.
 // It is not guaranteed to be efficient and works only for types
 // that are valid map keys.
 package fmtsort

@@ -7,7 +7,7 @@ package fmtsort_test
 import (
 	"cmp"
 	"fmt"
-	"internal/fmtsort"
+	"github.com/veigaribo/template/internal/fmtsort"
 	"math"
 	"reflect"
 	"runtime"

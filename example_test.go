@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 	"strings"
-	"text/template"
+	"github.com/veigaribo/template"
 )
 
 func ExampleTemplate() {

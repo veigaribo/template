@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"text/template/parse"
+	"github.com/veigaribo/template/parse"
 )
 
 const (
