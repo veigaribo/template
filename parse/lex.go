@@ -83,12 +83,14 @@ var key = map[string]itemType{
 	"break":    itemBreak,
 	"continue": itemContinue,
 	"define":   itemDefine,
+	"def":      itemDefine,
 	"else":     itemElse,
 	"end":      itemEnd,
 	"if":       itemIf,
 	"range":    itemRange,
 	"nil":      itemNil,
 	"template": itemTemplate,
+	"t":        itemTemplate,
 	"with":     itemWith,
 }
 

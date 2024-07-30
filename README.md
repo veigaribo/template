@@ -64,3 +64,15 @@ line 2
 =>
 I u
 ```
+
+## Added shorthands for `define` and `template`
+
+- `define` -> `def`
+- `template` -> `t`
+
+```
+{{- def "one" -}} I {{.}} {{- end -}}
+{{- $tmpl := "one" -}}
+
+{{t $tmpl "u"}}
+```
